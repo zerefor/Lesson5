@@ -31,13 +31,11 @@ public class LessonTest {
         }
 
         String url = "https://demoqa.com/";
-
         driver.get(url);
         driver.manage().window().maximize();
 
         System.out.println("URL = " + driver.getCurrentUrl());
         Assertions.assertEquals("https://demoqa.com/", driver.getCurrentUrl());
-
     }
 
     @AfterEach

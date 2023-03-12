@@ -8,9 +8,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import java.util.List;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class FormQATest {
     private WebDriver driver;
@@ -20,7 +25,8 @@ public class FormQATest {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
 
-        driver.get("https://demoqa.com/automation-practice-form");
+        String url = "https://demoqa.com/automation-practice-form";
+        driver.get(url);
         driver.manage().window().maximize();
     }
 
@@ -66,22 +72,26 @@ public class FormQATest {
         Select yearSelect = new Select(yearDate);
         yearSelect.getFirstSelectedOption();
 
-        WebElement dayDate = driver.findElement(By.cssSelector("[class*=\"day--001 react-datepicker__day--weekend\"][tabindex='-1']"));
+        WebElement dayDate = driver.findElement(By.cssSelector("[class*='day--001 react-datepicker__day--weekend'][tabindex='-1']"));
         dayDate.click();
 
-        WebElement state = driver.findElement(By.cssSelector("[id=\"react-select-3-input\"]"));
+        WebElement state = driver.findElement(By.cssSelector("[id='react-select-3-input']"));
         state.sendKeys("Uttar Pradesh");
         state.sendKeys(Keys.RETURN);
 
-        WebElement city = driver.findElement(By.cssSelector("[id=\"react-select-4-input\"]"));
+        WebElement city = driver.findElement(By.cssSelector("[id='react-select-4-input']"));
         city.sendKeys("Agra");
         city.sendKeys(Keys.RETURN);
 
-        WebElement subjects = driver.findElement(By.cssSelector("[id=\"subjectsInput\"]"));
+        WebElement subjects = driver.findElement(By.cssSelector("[id='subjectsInput']"));
         subjects.sendKeys("English");
         subjects.sendKeys(Keys.RETURN);
 
-        WebElement submitButton = driver.findElement(By.cssSelector("[id=\"submit\"]"));
+        By fileInput = By.cssSelector("[id='uploadPicture']");
+        String filePath = "C:/Users/User/Downloads/unnamed.png";
+        driver.findElement(fileInput).sendKeys(filePath);
+
+        WebElement submitButton = driver.findElement(By.cssSelector("[id='submit']"));
         submitButton.click();
 
         Thread.sleep(1000);
@@ -131,6 +141,12 @@ public class FormQATest {
         String checkboxString3 = checkboxClick3.getText();
         Assertions.assertEquals(checkboxString1 + ", " + checkboxString2 + ", " + checkboxString3, hobbiesTableString);
 
+        WebElement pictureTable = driver.findElement(By.cssSelector("table[class*='table']  tbody tr:nth-child(8) td:nth-child(2)"));
+        String pictureTableString = pictureTable.getText();
+        WebElement pictureText = driver.findElement(By.cssSelector("[id='uploadPicture']"));
+        String pictureString = pictureText.getAttribute("value");
+        Assertions.assertEquals(pictureString.substring(pictureString.lastIndexOf("\\") + 1), pictureTableString);
+
         WebElement addressTable = driver.findElement(By.cssSelector("table[class*='table']  tbody tr:nth-child(9) td:nth-child(2)"));
         String addressTableString = addressTable.getText();
         String addressString = currentAddress.getAttribute("value");
@@ -139,7 +155,7 @@ public class FormQATest {
         WebElement stateCityTable = driver.findElement(By.cssSelector("table[class*='table']  tbody tr:nth-child(10) td:nth-child(2)"));
         String stateCityTableString = stateCityTable.getText();
         WebElement stateCityMain = driver.findElement(By.cssSelector("[id='stateCity-wrapper']"));
-        List<WebElement> listStateCity = stateCityMain.findElements(By.cssSelector("[class=\"col-md-4 col-sm-12\"]"));
+        List<WebElement> listStateCity = stateCityMain.findElements(By.cssSelector("[class='col-md-4 col-sm-12']"));
 
         Thread.sleep(1000);
         String cityStateCheck = null;
@@ -153,8 +169,7 @@ public class FormQATest {
                 cityStateCheck = temp + " " + listCheckStateCity;
             }
         }
-        System.out.println(cityStateCheck);
-        System.out.println(stateCityTableString);
+        Assertions.assertEquals(cityStateCheck, stateCityTableString);
     }
 
     @AfterEach

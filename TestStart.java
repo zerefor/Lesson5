@@ -14,7 +14,8 @@ public class TestStart {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
 
-        driver.get("https://eu.battle.net/login/ru/");
+        String url = "https://eu.battle.net/login/ru/";
+        driver.get(url);
         driver.manage().window().maximize();
     }
 
