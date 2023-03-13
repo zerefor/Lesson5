@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.junit.jupiter.api.Test;
 
-public class TestStart {
+public class StartTest {
     private WebDriver driver;
 
     @BeforeEach

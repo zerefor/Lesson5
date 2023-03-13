@@ -15,7 +15,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class TestQAForm {
+public class QAFormTest {
     private WebDriver driver;
 
     @BeforeEach

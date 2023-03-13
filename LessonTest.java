@@ -7,7 +7,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.junit.jupiter.api.Test;
 
-public class TestLesson {
+public class LessonTest {
     private WebDriver driver;
 
     @Test
