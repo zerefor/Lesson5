@@ -8,18 +8,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class TestQAForm {
     private WebDriver driver;
@@ -97,7 +91,6 @@ public class TestQAForm {
         File file = Paths.get(res.toURI()).toFile();
         String absolutePath = file.getAbsolutePath();
         driver.findElement(fileInput).sendKeys(absolutePath);
-        System.out.println(absolutePath);
         Thread.sleep(1000);
 
         WebElement submitButton = driver.findElement(By.cssSelector("[id='submit']"));
@@ -129,13 +122,7 @@ public class TestQAForm {
 
         WebElement subjectTable = driver.findElement(By.cssSelector("table[class*='table']  tbody tr:nth-child(6) td:nth-child(2)"));
         String subjectTableString = subjectTable.getText();
-        WebElement subjectList = driver.findElement(By.cssSelector("[class*='subjects-auto-complete__value']"));
-        List<WebElement> list = subjectList.findElements(By.cssSelector("[class*='css-1rhbuit-multiValue']"));
-
-        Thread.sleep(1000); //TODO
-        for (WebElement item : list) {
-            Assertions.assertEquals("English", subjectTableString);
-        }
+        Assertions.assertEquals("English", subjectTableString);
 
         WebElement hobbiesTable = driver.findElement(By.cssSelector("table[class*='table']  tbody tr:nth-child(7) td:nth-child(2)"));
         String hobbiesTableString = hobbiesTable.getText();
