@@ -13,11 +13,15 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class FormQATest {
+public class TestQAForm {
     private WebDriver driver;
 
     @BeforeEach
@@ -31,7 +35,7 @@ public class FormQATest {
     }
 
     @Test
-    public void doPost() throws InterruptedException {
+    public void doPost() throws InterruptedException, URISyntaxException {
 
         WebElement firstName = driver.findElement(By.cssSelector("#firstName"));
         firstName.sendKeys("Rero");
@@ -87,9 +91,14 @@ public class FormQATest {
         subjects.sendKeys("English");
         subjects.sendKeys(Keys.RETURN);
 
+        Thread.sleep(1000);
         By fileInput = By.cssSelector("[id='uploadPicture']");
-        String filePath = "C:/Users/User/Downloads/unnamed.png";
-        driver.findElement(fileInput).sendKeys(filePath);
+        URL res = getClass().getClassLoader().getResource("unnamed.png");
+        File file = Paths.get(res.toURI()).toFile();
+        String absolutePath = file.getAbsolutePath();
+        driver.findElement(fileInput).sendKeys(absolutePath);
+        System.out.println(absolutePath);
+        Thread.sleep(1000);
 
         WebElement submitButton = driver.findElement(By.cssSelector("[id='submit']"));
         submitButton.click();
@@ -98,26 +107,21 @@ public class FormQATest {
 
         WebElement nameTable = driver.findElement(By.cssSelector("table[class*='table']  tbody tr:nth-child(1) td:nth-child(2)"));
         String nameTableString = nameTable.getText();
-        String firstNameCheck = firstName.getAttribute("value");
-        String lastNameCheck = lastName.getAttribute("value");
-        Assertions.assertEquals(firstNameCheck + " " + lastNameCheck, nameTableString);
+        Assertions.assertEquals("Rero ReroRero", nameTableString);
 
         WebElement emailTable = driver.findElement(By.cssSelector("table[class*='table']  tbody tr:nth-child(2) td:nth-child(2)"));
         String emailTableString = emailTable.getText();
-        String userEmailCheck = userEmail.getAttribute("value");
-        Assertions.assertEquals(userEmailCheck, emailTableString);
+        Assertions.assertEquals("ReroReroRero@gmail.com", emailTableString);
 
         WebElement genderTable = driver.findElement(By.cssSelector("table[class*='table']  tbody tr:nth-child(3) td:nth-child(2)"));
         String genderTableString = genderTable.getText();
-        String genderRadioCheck = genderRadio.getText();
-        Assertions.assertEquals(genderRadioCheck, genderTableString);
+        Assertions.assertEquals("Male", genderTableString);
 
         Thread.sleep(1000);
 
         WebElement numberTable = driver.findElement(By.cssSelector("table[class*='table']  tbody tr:nth-child(4) td:nth-child(2)"));
         String numberTableString = numberTable.getText();
-        String userNumberCheck = userNumber.getAttribute("value");
-        Assertions.assertEquals(userNumberCheck, numberTableString);
+        Assertions.assertEquals("2142112345", numberTableString);
 
         WebElement birthDateTable = driver.findElement(By.cssSelector("table[class*='table']  tbody tr:nth-child(5) td:nth-child(2)"));
         String brithDateTableString = birthDateTable.getText();
@@ -128,18 +132,14 @@ public class FormQATest {
         WebElement subjectList = driver.findElement(By.cssSelector("[class*='subjects-auto-complete__value']"));
         List<WebElement> list = subjectList.findElements(By.cssSelector("[class*='css-1rhbuit-multiValue']"));
 
-        Thread.sleep(1000);
+        Thread.sleep(1000); //TODO
         for (WebElement item : list) {
-            String listCheck = item.getText();
-            Assertions.assertEquals(listCheck, subjectTableString);
+            Assertions.assertEquals("English", subjectTableString);
         }
 
         WebElement hobbiesTable = driver.findElement(By.cssSelector("table[class*='table']  tbody tr:nth-child(7) td:nth-child(2)"));
         String hobbiesTableString = hobbiesTable.getText();
-        String checkboxString1 = checkboxClick1.getText();
-        String checkboxString2 = checkboxClick2.getText();
-        String checkboxString3 = checkboxClick3.getText();
-        Assertions.assertEquals(checkboxString1 + ", " + checkboxString2 + ", " + checkboxString3, hobbiesTableString);
+        Assertions.assertEquals("Sports, Reading, Music", hobbiesTableString);
 
         WebElement pictureTable = driver.findElement(By.cssSelector("table[class*='table']  tbody tr:nth-child(8) td:nth-child(2)"));
         String pictureTableString = pictureTable.getText();
@@ -149,8 +149,7 @@ public class FormQATest {
 
         WebElement addressTable = driver.findElement(By.cssSelector("table[class*='table']  tbody tr:nth-child(9) td:nth-child(2)"));
         String addressTableString = addressTable.getText();
-        String addressString = currentAddress.getAttribute("value");
-        Assertions.assertEquals(addressString, addressTableString);
+        Assertions.assertEquals("Matrix", addressTableString);
 
         WebElement stateCityTable = driver.findElement(By.cssSelector("table[class*='table']  tbody tr:nth-child(10) td:nth-child(2)"));
         String stateCityTableString = stateCityTable.getText();
@@ -169,7 +168,7 @@ public class FormQATest {
                 cityStateCheck = temp + " " + listCheckStateCity;
             }
         }
-        Assertions.assertEquals(cityStateCheck, stateCityTableString);
+        Assertions.assertEquals("Uttar Pradesh Agra", stateCityTableString);
     }
 
     @AfterEach
