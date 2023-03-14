@@ -29,7 +29,7 @@ public class QAFormTest {
     }
 
     @Test
-    public void doPost() throws InterruptedException, URISyntaxException {
+    public void formQA() throws InterruptedException, URISyntaxException {
 
         WebElement firstName = driver.findElement(By.cssSelector("#firstName"));
         firstName.sendKeys("Rero");
